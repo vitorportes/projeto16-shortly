@@ -44,3 +44,17 @@ export async function getUserTotalVisits(userId) {
     userId,
   ]);
 }
+
+export async function getUrlRanking() {
+  return db.query(`
+  SELECT 
+    users.id, 
+    users.name, 
+    COUNT(urls.*) AS "linksCount",
+    SUM(urls."visitCount") as "visitsCount"
+  FROM users
+    LEFT JOIN urls ON users.id = urls."userId"
+    GROUP BY users.id
+    ORDER BY "visitsCount"
+    LIMIT 10`);
+}

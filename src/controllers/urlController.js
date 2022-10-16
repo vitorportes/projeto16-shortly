@@ -3,6 +3,7 @@ import {
   deleteUrlById,
   getLongUrl,
   getUrl,
+  getUrlRanking,
   incrementVisitCount,
   insertUrl,
   verifyUrlOwner,
@@ -83,6 +84,16 @@ export async function deleteUrl(req, res) {
 
     console.log(id, userId);
     console.log(token.replace('Bearer ', ''));
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+}
+
+export async function getRanking(req, res) {
+  try {
+    const ranking = (await getUrlRanking()).rows;
+    res.status(200).send(ranking);
   } catch (error) {
     console.log(error);
     res.sendStatus(500);

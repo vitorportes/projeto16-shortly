@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
   deleteUrl,
+  getRanking,
   getUrlsById,
   openUrl,
   postShortUrl,
@@ -13,6 +14,6 @@ urlRouter.post('/urls/shorten', validateUrl, postShortUrl);
 urlRouter.get('/urls/:id', getUrlsById);
 urlRouter.get('/urls/open/:shortUrl', openUrl);
 urlRouter.delete('/urls/:id', deleteUrl);
-urlRouter.get('/ranking');
+urlRouter.get('/ranking', getRanking);
 
 export default urlRouter;
