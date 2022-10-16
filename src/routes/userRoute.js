@@ -1,11 +1,18 @@
 import { Router } from 'express';
-import { signUp } from '../controllers/userController.js';
-import { userValidator } from '../middlewares/userValidator.js';
+import {
+  getUserShortenedUrls,
+  signIn,
+  signUp,
+} from '../controllers/userController.js';
+import {
+  signInValidator,
+  signUpValidator,
+} from '../middlewares/userValidator.js';
 
 const userRouter = Router();
 
-userRouter.post('/signup', userValidator, signUp);
-userRouter.post('/signin');
-userRouter.get('/users/me');
+userRouter.post('/signup', signUpValidator, signUp);
+userRouter.post('/signin', signInValidator, signIn);
+userRouter.get('/users/me', getUserShortenedUrls);
 
 export default userRouter;

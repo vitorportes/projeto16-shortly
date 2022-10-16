@@ -1,9 +1,12 @@
-import { getUserByEmail } from '../repositories/userRepositories.js';
-import userSchema from '../schemas/userSchema.js';
+import {
+  getPassword,
+  getUserByEmail,
+} from '../repositories/userRepositories.js';
+import { signUpSchema, signInSchema } from '../schemas/userSchema.js';
 
-export async function userValidator(req, res, next) {
+export async function signUpValidator(req, res, next) {
   const user = req.body;
-  const validation = userSchema.validate(user);
+  const validation = signUpSchema.validate(user);
   const isRepeated = await getUserByEmail(user.email);
 
   if (validation.error) {
@@ -13,6 +16,23 @@ export async function userValidator(req, res, next) {
 
   if (isRepeated.rowCount > 0) {
     return res.sendStatus(409);
+  }
+
+  next();
+}
+
+export async function signInValidator(req, res, next) {
+  const user = req.body;
+  const checkEmail = await getUserByEmail(user.email);
+  const checkPassword = await getPassword(user.password);
+  const validation = signInSchema.validate(user);
+
+  if (validation.error) {
+    return res.sendStatus(422);
+  }
+
+  if (checkEmail.rowCount === 0 || checkPassword.rowCount === 0) {
+    return res.sendStatus(401);
   }
 
   next();

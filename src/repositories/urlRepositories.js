@@ -38,3 +38,9 @@ export async function verifyUrlOwner(id, userId) {
 export async function deleteUrlById(id) {
   return db.query(`DELETE FROM urls WHERE id = $1`, [id]);
 }
+
+export async function getUserTotalVisits(userId) {
+  return db.query(`SELECT SUM("visitCount") FROM urls WHERE "userId" = $1`, [
+    userId,
+  ]);
+}
