@@ -1,6 +1,5 @@
 import {
   createUser,
-  getToken,
   getUser,
   getUserId,
   getUserName,
@@ -9,13 +8,16 @@ import {
 } from '../repositories/userRepositories.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import bcrypt, { hashSync } from 'bcrypt';
 import { getUserTotalVisits } from '../repositories/urlRepositories.js';
 dotenv.config();
 
 export async function signUp(req, res) {
   const user = req.body; // name, email, password, confirmPassword
+  const password = bcrypt.hashSync(user.password, 10);
+
   try {
-    await createUser(user.name, user.email, user.password);
+    await createUser(user.name, user.email, password);
     res.sendStatus(201);
   } catch (error) {
     console.log(error);

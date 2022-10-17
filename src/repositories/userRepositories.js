@@ -8,8 +8,8 @@ export async function getUserByEmail(email) {
   return db.query(`SELECT email FROM users WHERE email = $1`, [email]);
 }
 
-export async function getPassword(password) {
-  return db.query(`SELECT password FROM users WHERE password = $1`, [password]);
+export async function getPassword(email) {
+  return db.query(`SELECT password FROM users WHERE email = $1`, [email]);
 }
 
 export async function getUserId(email) {
