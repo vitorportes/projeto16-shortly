@@ -1,5 +1,6 @@
 import {
   createUser,
+  getToken,
   getUser,
   getUserId,
   getUserName,
@@ -45,6 +46,9 @@ export async function getUserShortenedUrls(req, res) {
 
   try {
     if (!token) return res.sendStatus(401);
+
+    const validateToken = await getToken(token.replace('Bearer ', ''));
+    if (validateToken.rowCount === 0) return res.sendStatus(401);
 
     const userId = jwt.verify(
       token.replace('Bearer ', ''),
