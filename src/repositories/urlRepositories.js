@@ -51,10 +51,10 @@ export async function getUrlRanking() {
     users.id, 
     users.name, 
     COUNT(urls.*) AS "linksCount",
-    SUM(urls."visitCount") as "visitsCount"
+    COALESCE(SUM(urls."visitCount"), 0) as "visitsCount"
   FROM users
     LEFT JOIN urls ON users.id = urls."userId"
     GROUP BY users.id
-    ORDER BY "visitsCount"
+    ORDER BY "visitsCount" DESC
     LIMIT 10`);
 }
