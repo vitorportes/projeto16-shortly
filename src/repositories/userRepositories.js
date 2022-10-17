@@ -16,8 +16,8 @@ export async function getUserId(email) {
   return db.query(`SELECT id FROM users WHERE email = $1`, [email]);
 }
 
-export async function getToken(id) {
-  return db.query(`SELECT token FROM sessions WHERE "userId" = $1`, id);
+export async function getToken(token) {
+  return db.query(`SELECT token FROM sessions WHERE token = $1`, [token]);
 }
 
 export async function createUser(name, email, password) {

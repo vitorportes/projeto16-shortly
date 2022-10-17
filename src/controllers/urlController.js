@@ -10,6 +10,7 @@ import {
 } from '../repositories/urlRepositories.js';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { getToken } from '../repositories/userRepositories.js';
 dotenv.config();
 
 export async function postShortUrl(req, res) {
@@ -17,9 +18,13 @@ export async function postShortUrl(req, res) {
   const url = req.body.url;
   const shortUrl = nanoid(8);
   const jwtSecret = process.env.JWT_SECRET;
-  const userId = jwt.verify(token, jwtSecret).userId;
 
   try {
+    const validateToken = await getToken(token);
+    if (validateToken.rowCount === 0) return res.sendStatus(401);
+
+    const userId = jwt.verify(token, jwtSecret).userId;
+
     await insertUrl(shortUrl, url, userId);
     res.status(201).json({ shortUrl: shortUrl });
   } catch (error) {
