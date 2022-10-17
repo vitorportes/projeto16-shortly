@@ -80,15 +80,16 @@ export async function deleteUrl(req, res) {
       process.env.JWT_SECRET
     ).userId;
 
+    const validateUrl = await getUrl(id);
+
+    if (validateUrl.rowCount === 0) return res.sendStatus(404);
+
     const verify = await verifyUrlOwner(id, userId);
 
     if (verify.rowCount === 0) return res.sendStatus(401);
 
     await deleteUrlById(id);
     res.sendStatus(204);
-
-    console.log(id, userId);
-    console.log(token.replace('Bearer ', ''));
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
