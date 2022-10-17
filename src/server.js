@@ -10,7 +10,7 @@ app.use(json());
 app.use(cors());
 app.use(router);
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`server running on port: ${port}`);
