@@ -26,10 +26,10 @@ export async function postShortUrl(req, res) {
     const userId = jwt.verify(token, jwtSecret).userId;
 
     await insertUrl(shortUrl, url, userId);
-    res.status(201).json({ shortUrl: shortUrl });
+    return res.status(201).json({ shortUrl: shortUrl });
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
@@ -43,10 +43,10 @@ export async function getUrlsById(req, res) {
       return res.sendStatus(404);
     }
 
-    res.status(200).json(url.rows[0]);
+    return res.status(200).json(url.rows[0]);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
@@ -61,10 +61,10 @@ export async function openUrl(req, res) {
     }
 
     await incrementVisitCount(shortUrl);
-    res.redirect(longUrl.rows[0].url);
+    return res.redirect(longUrl.rows[0].url);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
@@ -89,19 +89,19 @@ export async function deleteUrl(req, res) {
     if (verify.rowCount === 0) return res.sendStatus(401);
 
     await deleteUrlById(id);
-    res.sendStatus(204);
+    return res.sendStatus(204);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
 export async function getRanking(req, res) {
   try {
     const ranking = (await getUrlRanking()).rows;
-    res.status(200).send(ranking);
+    return res.status(200).send(ranking);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }

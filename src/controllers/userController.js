@@ -19,10 +19,10 @@ export async function signUp(req, res) {
 
   try {
     await createUser(user.name, user.email, password);
-    res.sendStatus(201);
+    return res.sendStatus(201);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
@@ -34,10 +34,10 @@ export async function signIn(req, res) {
 
   try {
     await login(token, id);
-    res.send({ token: token });
+    return res.send({ token: token });
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
@@ -64,10 +64,10 @@ export async function getUserShortenedUrls(req, res) {
     const visitCount = (await getUserTotalVisits(userId)).rows[0].sum;
     const data = formatUserData(userId, name, visitCount, posts);
 
-    res.status(200).json(data);
+    return res.status(200).json(data);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 }
 
